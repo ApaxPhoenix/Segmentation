@@ -55,7 +55,7 @@ class DatasetLoader(Dataset):
     segmentation masks for training neural networks.
 
     Expected directory structure:
-        dataset_root/
+        dataset/
         ├── images/          # Image files (.jpg, .png, etc.)
         └── annotations/     # XML files matching image names
 
@@ -252,4 +252,5 @@ class DatasetLoader(Dataset):
             # Log the error and return None to skip this sample
             logger.error(f"Sample {index} loading failed ({image}): {error}")
             warnings.warn(f"Skipping sample {index}: {str(error)}")
+
             return None

@@ -56,8 +56,14 @@ class DatasetLoader(Dataset):
 
     Expected directory structure:
         dataset/
-        ├── images/          # Image files (.jpg, .png, etc.)
-        └── annotations/     # XML files matching image names
+        ├── images/
+        │   ├── image001.jpg
+        │   ├── image002.png
+        │   └── ...
+        └── annotations/
+            ├── image001.xml
+            ├── image002.xml
+            └── ...
 
     Attributes:
         images: Path to image directory

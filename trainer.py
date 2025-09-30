@@ -20,7 +20,7 @@ logger = logging.getLogger("trainer")
 
 
 class Trainer:
-    """Professional deep learning trainer for semantic segmentation models.
+    """Deep learning trainer for semantic segmentation models.
 
     This class implements a comprehensive training pipeline for semantic segmentation
     tasks using PyTorch. It manages the complete training lifecycle including data
@@ -695,4 +695,5 @@ class Trainer:
         except Exception as error:
             logger.error(f"Error saving model: {str(error)}")
             warnings.warn(f"Error saving model: {str(error)}")
+
             raise

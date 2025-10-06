@@ -4,27 +4,26 @@ A PyTorch framework for training semantic segmentation models. This repo gives y
 
 ## Supported Models
 
-- **UNet** - Classic encoder-decoder architecture for biomedical image segmentation
-- **FCN ResNet50/101** - Fully convolutional networks with ResNet backbones
-- **DeepLabV3 ResNet50/101** - Atrous convolution-based models with ResNet backbones
-- **DeepLabV3 MobileNet** - Lightweight DeepLabV3 with MobileNetV3 backbone
-- **LRASPP MobileNet** - Lite R-ASPP for efficient mobile segmentation
-- **SegNet** - Encoder-decoder with pooling indices for upsampling
+- **UNet** - The go-to encoder-decoder for medical imaging
+- **FCN ResNet50/101** - Fully convolutional networks built on ResNet
+- **DeepLabV3 ResNet50/101** - Uses atrous convolutions with ResNet backbones
+- **DeepLabV3 MobileNet** - Smaller DeepLabV3 that runs on mobile devices
+- **LRASPP MobileNet** - Stripped-down version for speed
+- **SegNet** - Uses pooling indices to upsample efficiently
 
-## What's Included
+## What You Get
 
-- One training pipeline that works across all architectures
-- Pre-trained weights support for transfer learning
-- Logging split across different components (makes debugging way easier)
-- Command-line config for everything
-- Automatic checkpointing and evaluation
-- Works with custom datasets at any resolution
-- Built-in validation and testing
-- Multi-GPU training support
+- Single pipeline for all eight architectures
+- Transfer learning with pre-trained weights
+- Separate log files for each component (trust me, this helps)
+- Configure everything from the command line
+- Auto-saves checkpoints and runs validation
+- Handles any image size and custom datasets
+- Multi-GPU support if you've got the hardware
 
 ## Setup
 
-You'll need PyTorch and the usual suspects:
+Install the dependencies:
 
 ```bash
 pip install torch torchvision numpy
@@ -44,74 +43,42 @@ python main.py \
   --output ./model.pt
 ```
 
-### All the Options
+### Command Line Arguments
 
 #### Model Setup
-- `--module` - Pick your architecture (required)
-- `--classes` - How many segmentation classes in your dataset (required)
-- `--channels` - Image channels, usually 3 for RGB
-- `--weights` - Load pre-trained weights (on by default)
+- `--module` - Which architecture to use (required)
+- `--classes` - Number of segmentation classes (required)
+- `--channels` - Input channels, typically 3 for RGB
+- `--weights` - Use pre-trained weights (enabled by default)
 
-#### Where Your Data Lives
-- `--training-path` - Training data folder (required)
-- `--validation-path` - Validation data folder (required)
-- `--testing-path` - Test data folder (required)
-- `--weights-path` - Existing checkpoint to continue from
+#### Data Paths
+- `--training-path` - Where your training data lives (required)
+- `--validation-path` - Where your validation data lives (required)
+- `--testing-path` - Where your test data lives (required)
+- `--weights-path` - Path to checkpoint if resuming training
 
-#### Training Settings
-- `--epochs` - Training epochs (default: 50)
-- `--batch-size` - Batch size (default: 16)
-- `--learning-rate` - Starting LR (default: 0.001)
+#### Training Parameters
+- `--epochs` - How long to train (default: 50)
+- `--batch-size` - Samples per batch (default: 16)
+- `--learning-rate` - Initial learning rate (default: 0.001)
 - `--dimensions` - Image size as height width (default: 512 512)
-- `--workers` - Data loading threads (default: 4)
-- `--seed` - Set this for reproducible runs
+- `--workers` - Number of data loading threads (default: 4)
+- `--seed` - Random seed for reproducibility
 
-#### If You Want to Get Fancy
-- `--weight-decay` - L2 regularization (default: 0.0005)
-- `--gamma` - LR decay rate (default: 0.1)
-- `--parallelism` - Enable multi-GPU training (default: False)
-- `--output` - Where to save trained model (default: model.pt)
-
-### Real Example
-
-```bash
-python main.py \
-  --module deeplabv3_resnet50 \
-  --classes 19 \
-  --training-path ./datasets/train \
-  --validation-path ./datasets/val \
-  --testing-path ./datasets/test \
-  --dimensions 512 512 \
-  --epochs 100 \
-  --batch-size 8 \
-  --learning-rate 0.001 \
-  --weight-decay 0.0005 \
-  --gamma 0.1 \
-  --workers 8 \
-  --seed 42 \
-  --parallelism True \
-  --output ./model.pt
-```
-
-## What Happens During Training
-
-Pretty straightforward flow:
-
-1. Model gets initialized with your settings
-2. Data loaders spin up for training and validation
-3. Training loop runs with automatic gradient updates
-4. Validation happens after each epoch
-5. Test evaluation runs at the end
-6. Best weights get saved based on validation performance
+#### Advanced Options
+- `--weight-decay` - L2 regularization strength (default: 0.0005)
+- `--gamma` - Learning rate decay factor (default: 0.1)
+- `--parallelism` - Use multiple GPUs (default: False)
+- `--output` - Where to save the trained model (default: model.pt)
 
 ## Logging
 
-Logs are split into four files so you're not hunting through one massive log:
+Logs get written to four separate files:
 
-- `main.log` - Overall flow and status
-- `loader.log` - Data loading stuff
-- `modules.log` - Model operations
-- `trainer.log` - Training metrics and performance
+- `main.log` - High-level program flow
+- `loader.log` - Data loading operations
+- `modules.log` - Model-specific operations
+- `trainer.log` - Training progress and metrics
 
 ## Structure
 
@@ -130,13 +97,13 @@ Logs are split into four files so you're not hunting through one massive log:
 - torchvision
 - NumPy
 
-## Things Worth Knowing
+## Notes
 
-Pre-trained weights load automatically when available. This usually helps a lot, especially if you don't have tons of training data.
+Pre-trained weights load automatically when you have them. They're especially useful when you're working with smaller datasets.
 
-Segmentation models are memory-intensive. If you run into OOM errors, try reducing the batch size or image dimensions.
+Segmentation eats up memory fast. If you hit OOM errors, drop the batch size or shrink your image dimensions.
 
-Each model comes with sensible defaults, but you'll probably want to tweak things based on your dataset and how much compute you have available.
+The defaults work well enough to get started, but you'll want to tune them based on your specific dataset and hardware.
 
 ## License
 
